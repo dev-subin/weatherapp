@@ -25,11 +25,11 @@ const WeatherApp = () => {
       });
   };
   return (
-    <div className={`bg-green-400 dark:bg-black h-[100vh] w-screen ${darkMode && "dark"}`}>
+    <div className={`bg-green-400 dark:bg-black h-[100vh] w-screen overflow-hidden ${darkMode && "dark"}`}>
       <div className="dark:bg-[#012346] h-[100vh] w-screen">
       <div className="flex place-content-evenly">
-        <div className="bg-green-400 h[100vh]">
-          <h1 className="text-5xl text-gray-700 dark:text-white font-bold  mt-4 md:mt-36">
+        <div className=" h[100vh]  mt-8 md:mt-36">
+          <h1 className="text-2xl md:text-5xl text-gray-700 dark:text-white font-bold ">
            weather_app
           </h1>
         </div>
@@ -50,7 +50,7 @@ handleClick()
      <div>
         <div className="mt-12">
           <div className="flex justify-center items-center">
-            <div className=" w-10/12 md:w-8/12 flex flex-row justify-center items-center bg-white dark:bg-black outline-none rounded-full h-12 dark:text-white">
+            <div className=" w-11/12 md:w-8/12 flex flex-row justify-center items-center bg-white dark:bg-black outline-none rounded-full h-12 dark:text-white">
               <i className="fa-solid fa-magnifying-glass fa-xl ml-5 text-gray-400 font-bold"> </i>
               <input
                 type="text"
