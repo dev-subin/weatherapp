@@ -7,16 +7,20 @@ const WeatherApp = () => {
   const [response, setResponse] = useState("");
   const [error,setError] = useState('')
   const [darkMode,setDarkMode] =useState(false)
+  const[loader,setLoader] = useState(false)
   const handleClick = () => {
+    setLoader(true)
     axios
       .get(
         `http://api.weatherapi.com/v1/current.json?key=d63e97c70eab4fec92875300220303&q=${data}&aqi=no`
       )
       .then((res) => {
+        setLoader(false)
         setResponse(res.data);
         setData("");
       })
       .catch((err) => {
+        setLoader(false)
         setError(err)
         setResponse(null)
         setData("")
@@ -59,6 +63,7 @@ const WeatherApp = () => {
         </div>
       </div>
      <form action="" onSubmit={(e)=>{
+       setLoader(true)
 e.preventDefault()
 handleClick()
      }}>
@@ -76,9 +81,9 @@ handleClick()
 
               />
               <i
-                className="fa-solid fa-location-arrow fa-xl mr-5 cursor-pointer text-gray-600 hover:underline hover:text-red-900"
-                onClick={handleClick}
-              ></i>
+               className="fa-solid fa-location-arrow fa-xl mr-5 cursor-pointer text-gray-600 hover:underline hover:text-red-900"
+               onClick={handleClick}
+             ></i>
             </div>
           </div>
         </div>
@@ -91,103 +96,105 @@ handleClick()
          </div>
         </div>
       }
-      {response && (
-       <div className="flex justify-center items-center">
-          <div className=" mt-12 flex flex-col justify-center items-center md:flex-col md:place-content-between lg:flex-row  bg-blue-800 dark:bg-black w-full md:full lg:w-10/12 md:rounded-xl xl:flex-row">
-          <div >
-            <div>
-              <h1 className="text-gray-400 text-center md:text-left font-bold md:ml-12 text-3xl mt-6">
-                Current Weather
-              </h1>
-            </div>
-            <div className="mt-8 ">
-              <span className="text-blue-400 text-2xl italic font-bold md:ml-24 hover:">
-                {response.location.name},{response.location.region}
-              </span>
-            </div>
-            <div className="md:flex flex flex-row">
-              <div className="">
-                <img
-                  src={response.current.condition.icon}
-                  alt=""
-                  className="w-52"
-                />
-
-              </div>
-              <div className="mt-6 md:mt-6 flex flex-col">
-                <p className="text-7xl md:text-8xl text-[#012346] font-normal">
-                  {response.current.temp_c}°
+     {
+       loader ? <div className="flex justify-center items-center mt-12"><i class="fas fa-spinner fa-pulse fa-6x text-[#012346] font-bold text-center"></i></div> :
+       response && (
+        <div className="flex justify-center items-center">
+           <div className=" mt-12 flex flex-col justify-center items-center md:flex-col md:place-content-between lg:flex-row  bg-blue-800 dark:bg-black w-full md:full lg:w-10/12 md:rounded-xl xl:flex-row">
+           <div >
+             <div>
+               <h1 className="text-gray-400 text-center md:text-left font-bold md:ml-12 text-3xl mt-6">
+                 Current Weather
+               </h1>
+             </div>
+             <div className="mt-8 ">
+               <span className="text-blue-400 text-2xl italic font-bold md:ml-24 hover:">
+                 {response.location.name},{response.location.region}
+               </span>
+             </div>
+             <div className="md:flex flex flex-row">
+               <div className="">
+                 <img
+                   src={response.current.condition.icon}
+                   alt=""
+                   className="w-52"
+                 />
+ 
+               </div>
+               <div className="mt-6 md:mt-6 flex flex-col">
+                 <p className="text-7xl md:text-8xl text-[#012346] font-normal">
+                   {response.current.temp_c}°
+                 </p>
+                 <div>
+                 <p className="text-gray-400 font-bold  text-3xl mt-6">
+             
+             {response.current.condition.text}
                 </p>
-                <div>
-                <p className="text-gray-400 font-bold  text-3xl mt-6">
-            
-            {response.current.condition.text}
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div className="mb-12 md:mt-12">
+             <div>
+               <p className="text-2xl font-bold text-gray-400 mr-56">
+                 Feels like <span className="text-[#012346] dark:text-white text-2xl font-bold">{response.current.temp_c}°</span>{" "}
                </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mb-12 md:mt-12">
-            <div>
-              <p className="text-2xl font-bold text-gray-400 mr-56">
-                Feels like <span className="text-[#012346] dark:text-white text-2xl font-bold">{response.current.temp_c}°</span>{" "}
-              </p>
-            </div>
-            <div className="flex flex-row">
-              <div className="mt-6 flex flex-row ">
-                <div className="">
-                  <i class="fa-solid fa-arrow-up fa-xl text-gray-400 font-bold"></i>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#012346] dark:text-white ml-4">
-                    {response.current.feelslike_c}°
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 flex flex-row">
-                <div className="ml-10">
-                  <i class="fa-solid fa-arrow-down fa-xl text-gray-400"></i>
-                </div>
-                <p className="text-xl font-bold text-[#012346] dark:text-white ml-4">
-                  {response.current.feelslike_c}°
-                </p>
-              </div>
-            </div>
-            <div className="flex ">
-              <div className="mt-6 text-gray-400 font-semibold text-xl">
-                <p>Humidity</p>
-              </div>
-              <div>
-                <p className="mt-6 text-[#012346] dark:text-white font-bold text-xl ml-6">
-                  {response.current.humidity}%
-                </p>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="mt-4 text-gray-400 font-semibold text-xl">
-                <p>Wind</p>
-              </div>
-              <div>
-                <p className="mt-4 text-[#012346] dark:text-white font-bold text-xl ml-14">
-                  {response.current.wind_kph}kph
-                </p>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="mt-4 text-gray-400 font-semibold text-xl">
-                <p>Pressure</p>
-              </div>
-              <div>
-                <p className="mt-4 text-[#012346] dark:text-white font-bold text-xl ml-8">
-                  {response.current.pressure_mb}hpa
-                </p>
-              </div>
-            </div>
-          </div>
+             </div>
+             <div className="flex flex-row">
+               <div className="mt-6 flex flex-row ">
+                 <div className="">
+                   <i class="fa-solid fa-arrow-up fa-xl text-gray-400 font-bold"></i>
+                 </div>
+                 <div>
+                   <p className="text-xl font-bold text-[#012346] dark:text-white ml-4">
+                     {response.current.feelslike_c}°
+                   </p>
+                 </div>
+               </div>
+               <div className="mt-6 flex flex-row">
+                 <div className="ml-10">
+                   <i class="fa-solid fa-arrow-down fa-xl text-gray-400"></i>
+                 </div>
+                 <p className="text-xl font-bold text-[#012346] dark:text-white ml-4">
+                   {response.current.feelslike_c}°
+                 </p>
+               </div>
+             </div>
+             <div className="flex ">
+               <div className="mt-6 text-gray-400 font-semibold text-xl">
+                 <p>Humidity</p>
+               </div>
+               <div>
+                 <p className="mt-6 text-[#012346] dark:text-white font-bold text-xl ml-6">
+                   {response.current.humidity}%
+                 </p>
+               </div>
+             </div>
+             <div className="flex">
+               <div className="mt-4 text-gray-400 font-semibold text-xl">
+                 <p>Wind</p>
+               </div>
+               <div>
+                 <p className="mt-4 text-[#012346] dark:text-white font-bold text-xl ml-14">
+                   {response.current.wind_kph}kph
+                 </p>
+               </div>
+             </div>
+             <div className="flex">
+               <div className="mt-4 text-gray-400 font-semibold text-xl">
+                 <p>Pressure</p>
+               </div>
+               <div>
+                 <p className="mt-4 text-[#012346] dark:text-white font-bold text-xl ml-8">
+                   {response.current.pressure_mb}hpa
+                 </p>
+               </div>
+             </div>
+           </div>
+         </div>
         </div>
-       </div>
-       
-      )}
+        
+       )}
     </div>
     </div>
   );
