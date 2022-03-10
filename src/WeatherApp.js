@@ -12,7 +12,7 @@ const WeatherApp = () => {
     setLoader(true)
     axios
       .get(
-        `http://api.weatherapi.com/v1/current.json?key=d63e97c70eab4fec92875300220303&q=${data}&aqi=no`
+        `https://api.weatherapi.com/v1/current.json?key=d63e97c70eab4fec92875300220303&q=${data}&aqi=no`
       )
       .then((res) => {
         setLoader(false)
